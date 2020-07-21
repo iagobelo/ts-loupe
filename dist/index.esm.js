@@ -1,6 +1,6 @@
 /*!
- * [libraryName] v0.0.0
- * (c) [authorFullName]
+ * ts-loupe v0.0.0
+ * (c) Iago Belo
  * Released under the MIT License.
  */
 /**

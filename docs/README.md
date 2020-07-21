@@ -1,4 +1,4 @@
-**[[libraryNameWithSpacesAndUpperCases]](README.md)**
+**[TS Loupe](README.md)**
 
 [Globals](README.md)
 
