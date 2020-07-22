@@ -1,16 +1,17 @@
-export type Getter<O, V> = (data: O) => V;
+export type Getter<A, B> = (data: A) => B;
 
-export type Setter<O, V> = (value: V) => (data: O) => O;
+export type Setter<A, B> = (value: B) => (data: A) => A;
 
-export type Lens<O, V> = {
-  get: Getter<O, V>;
-  set: Setter<O, V>;
-};
+export interface Lens<A, B> {
+  get: Getter<A, B>;
+  set: Setter<A, B>;
+  ap: <C>(fn: (b: B) => C) => Lens<A, C>;
+}
 
-export type LensBuilder = <O, V>(
-  getter: Getter<O, V>,
-  setter: Setter<O, V>
-) => Lens<O, V>;
+export type LensBuilder = <A, B>(
+  getter: Getter<A, B>,
+  setter: Setter<A, B>
+) => Lens<A, B>;
 
 /**
  *
@@ -18,7 +19,9 @@ export type LensBuilder = <O, V>(
  * @param setter
  */
 const lens: LensBuilder = (getter, setter) => ({
-  get: getter,
+  get(a) {
+    return getter(a);
+  },
   set: setter
 });
 

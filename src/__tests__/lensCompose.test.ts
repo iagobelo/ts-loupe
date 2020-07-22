@@ -1,5 +1,5 @@
 import compose from '../compose';
-import lensProp from '../lensProp';
+import lensProp from '../prop';
 
 describe('lensProp', () => {
   type User = {
@@ -18,9 +18,11 @@ describe('lensProp', () => {
     const pocketLens = lensProp<User>('pocket');
     const moneyLens = lensProp<User['pocket']>('money');
 
-    const composedLens = compose(
+    const userMoneyLens = compose(
       pocketLens,
       moneyLens
     );
+
+    expect(userMoneyLens.get(user)).toEqual(user.pocket.money);
   });
 });

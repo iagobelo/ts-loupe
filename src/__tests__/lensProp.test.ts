@@ -1,4 +1,4 @@
-import lensProp from '../lensProp';
+import lensProp from '../prop';
 
 describe('lensProp', () => {
   type User = { name: string };

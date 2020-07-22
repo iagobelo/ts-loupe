@@ -4,6 +4,7 @@
     "target": "es2019",
 
     // Configuration for module.
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,

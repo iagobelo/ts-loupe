@@ -1,42 +1,25 @@
-import { Getter, Lens } from './lens';
-
-type Param = {};
+import { Lens } from './lens';
 
 // prettier-ignore
-type LensCompose = 
-  <
-    O,
-    A, B, C, D, E,
-    X1 extends [Lens<O, A>],
-    X2 extends [Lens<O, A>, Lens<A, B>],
-    X3 extends [Lens<O, A>, Lens<A, B>, Lens<B, C>],
-    X4 extends [Lens<O, A>, Lens<A, B>, Lens<B, C>, Lens<C, D>],
-    X5 extends [Lens<O, A>, Lens<A, B>, Lens<B, C>, Lens<C, D>, Lens<D, E>],
-    
-    Lenses extends  X1 | X2 | X3 | X4 | X5,
-    Result = Lenses extends X1
-      ? Lens<O, A>
-      : Lenses extends X2
-      ? Lens<O, B>
-      : Lenses extends X3
-      ? Lens<O, C>
-      : Lenses extends X4
-      ? Lens<O, D>
-      : Lenses extends X5
-      ? Lens<O, E>
-      : Lens<O, any>
-  >(...lenses: Lenses) => Result;
+export interface LensCompose {
+  <A, B, C>(...lenses: [Lens<A, B>, Lens<B, C>]): Lens<A, C>;
+  <A, B, C, D>(...lenses: [Lens<A, B>, Lens<B, C>, Lens<C, D>]): Lens<A, D>;
+  <A, B, C, D, E>(...lenses: [Lens<A, B>, Lens<B, C>, Lens<C, D>, Lens<D, E>]): Lens<A, E>;
+  <A, B, C, D, E, F>(...lenses: [Lens<A, B>, Lens<B, C>, Lens<C, D>, Lens<D, E>, Lens<D, F>]): Lens<A, F>;
+  <A, B, C, D, E, F, G>(...lenses: [Lens<A, B>, Lens<B, C>, Lens<C, D>, Lens<D, E>, Lens<E, F>, Lens<F, G>]): Lens<A, G>;
+  <A, B, C, D, E, F, G, H>(...lenses: [Lens<A, B>, Lens<B, C>, Lens<C, D>, Lens<D, E>, Lens<E, F>, Lens<F, G>, Lens<G, H>]): Lens<A, H>;
+}
 
-const compose: LensCompose = lenses => ({
-  get: (data: any) =>
-    lenses.slice(1).reduce((a, c) => c.get(a), (lenses[0] as X1[0]).get(data)),
-  set: (value: any) => (data: any) => lenses[0].set(value)(data)
-});
-
-/*({
-    get: (o: O) => lenses.slice(1).reduce((a, c) => c.get(a), lenses[0].get(o)),
-    set: value => o =>
-      lenses.slice(1).reduce((a, c) => c.get(a), lenses[0].get(o))
-  });*/
+const compose: LensCompose = (...lenses: Lens<any, any>[]) => {
+  return {
+    get: (o: any) =>
+      lenses.slice(1).reduce((a, c) => c.get(a), lenses[0].get(o)),
+    set: (value: any) => (o: any) =>
+      lenses
+        .reverse()
+        .slice(1)
+        .reduce(() => lenses[0].set(value), lenses[0].get(o))
+  };
+};
 
 export default compose;

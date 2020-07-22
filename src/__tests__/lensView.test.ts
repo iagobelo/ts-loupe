@@ -1,5 +1,5 @@
 import lens from '../lens';
-import lensView from '../lensView';
+import lensView from '../view';
 
 describe('lensView', () => {
   type User = { name: string };

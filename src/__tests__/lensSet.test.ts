@@ -1,5 +1,5 @@
 import lens from '../lens';
-import lensSet from '../lensSet';
+import lensSet from '../set';
 
 describe('lensSet', () => {
   type User = { name: string };
