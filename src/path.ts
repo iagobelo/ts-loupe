@@ -51,11 +51,38 @@ const path: LensPath = (path: any[]) => ({
       .reduce((obj, p) => prop<any>(p).get(obj), lens.get(data));
   },
   set: (value: any) => (data: any) => {
-    const lens = prop<any>(path[0]);
     return path
-      .slice(1)
-      .reduce((obj, p) => prop<any>(p).set(obj), lens.set(data));
+      .reduce(
+        (a, p, index) =>
+          index === 0
+            ? [prop<any>(p).get(data)]
+            : [...a, prop<any>(p).get(a[index - 1])],
+        []
+      )
+      .reverse()
+      .reduce();
   }
 });
+
+const t = <A, B, C, D, E>(
+  ab: Lens<A, B>,
+  bc: Lens<B, C>,
+  cd: Lens<C, D>,
+  de: Lens<D, E>
+): Lens<A, E> => ({
+  set: e => a => {
+    const b1 = ab.get(a);
+    const c1 = bc.get(b1);
+    const d1 = cd.get(c1);
+    const d2 = de.set(e)(d1);
+    const c2 = cd.set(d2)(c1);
+    const b2 = bc.set(c2)(b1);
+    return ab.set(b2)(a);
+  },
+
+  get: a => bc.get(ab.get(a))
+});
+
+// set = value => data => data
 
 export default path;
