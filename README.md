@@ -5,6 +5,10 @@
 [![Library minified size](https://badgen.net/bundlephobia/min/ts-loupe)](https://bundlephobia.com/result?p=ts-loupe)
 [![Library minified + gzipped size](https://badgen.net/bundlephobia/minzip/ts-loupe)](https://bundlephobia.com/result?p=ts-loupe)
 
+## About
+
+Lenses is a pattern used to read and update properties within an object.
+
 ## Installation
 
 This library is published in the NPM registry and can be installed using any compatible package manager.
@@ -26,11 +30,6 @@ This module has an UMD bundle available through JSDelivr and Unpkg CDNs.
 
 <!-- For JSDelivr use the code below. -->
 <script src="https://cdn.jsdelivr.net/npm/ts-loupe"></script>
-
-<script>
-  // UMD module is exposed through the "[libraryCammelCaseName]" global variable.
-  console.log([libraryCammelCaseName]);
-</script>
 ```
 
 ## Documentation
