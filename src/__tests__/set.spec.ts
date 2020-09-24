@@ -4,9 +4,8 @@ import lensSet from '../set';
 describe('lensSet', () => {
   type User = { name: string };
 
-  const user: User = { name: 'Len' };
-
-  it('Set a object propertie from a given lens using lensSet()', () => {
+  it('Set a object propertie from a given lens using set()', () => {
+    const user: User = { name: 'Len' };
     const getName = (user: User) => user.name;
     const setName = (name: User['name']) => (data: User) => ({ ...data, name });
     const nameLens = lens(getName, setName);

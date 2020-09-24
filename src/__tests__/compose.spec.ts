@@ -8,13 +8,13 @@ describe('lensProp', () => {
     };
   };
 
-  const user = {
-    pocket: {
-      money: 3213
-    }
-  };
+  it('Get and set a object propertie from a given lens created using prop()', () => {
+    const user = {
+      pocket: {
+        money: 3213
+      }
+    };
 
-  it('Get and set a object propertie from a given lens created using lensProp()', () => {
     const pocketLens = lensProp<User>('pocket');
     const moneyLens = lensProp<User['pocket']>('money');
 
@@ -23,6 +23,13 @@ describe('lensProp', () => {
       moneyLens
     );
 
+    const newUser = userMoneyLens.set(1000)({
+      pocket: {
+        money: 3213
+      }
+    });
+
     expect(userMoneyLens.get(user)).toEqual(user.pocket.money);
+    expect(newUser.pocket).toEqual({ money: 1000 });
   });
 });
