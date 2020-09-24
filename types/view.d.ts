@@ -1,11 +1,8 @@
 import { Lens } from './lens';
-
-type LensView = <O, V>(lens: Pick<Lens<O, V>, 'get'>) => (data: O) => V;
-
+declare type LensView = <O, V>(lens: Pick<Lens<O, V>, 'get'>) => (data: O) => V;
 /**
  * Returns the property using the given lens.
  * @param lens - Lens to get (view) the property.
  */
-const view: LensView = lens => lens.get;
-
+declare const view: LensView;
 export default view;
