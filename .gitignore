@@ -15,3 +15,5 @@ npm-shrinkwrap.json
 # Log's files.
 *.log
 *.log.*
+
+dist/
