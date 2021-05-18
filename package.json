@@ -1,6 +1,6 @@
 {
   "name": "ts-loupe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Strongly typed and lightweight lens library.",
   "cdn": "dist/index.umd.js",
   "main": "dist/index.js",
