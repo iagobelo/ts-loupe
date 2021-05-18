@@ -18,10 +18,7 @@ describe('lensProp', () => {
     const pocketLens = lensProp<User>('pocket');
     const moneyLens = lensProp<User['pocket']>('money');
 
-    const userMoneyLens = compose(
-      pocketLens,
-      moneyLens
-    );
+    const userMoneyLens = compose(pocketLens, moneyLens);
 
     const newUser = userMoneyLens.set(1000)({
       pocket: {
