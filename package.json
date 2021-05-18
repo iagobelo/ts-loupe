@@ -21,9 +21,9 @@
   },
   "scripts": {
     "test": "yarn test:lint && yarn test:unit",
-    "test:lint": "prettier **/*.{ts,tsx,js,jsx,json} --check",
+    "test:lint": "prettier src/**/*.{ts,tsx,js,jsx,json} --check",
     "test:unit": "jest",
-    "lint": "prettier **/*.{ts,tsx,js,jsx,json} --write",
+    "lint": "prettier src/**/*.{ts,tsx,js,jsx,json} --write",
     "build": "bili",
     "prepublishOnly": "yarn build && yarn test"
   },
