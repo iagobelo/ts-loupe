@@ -17,3 +17,4 @@ npm-shrinkwrap.json
 *.log.*
 
 dist/
+types/
