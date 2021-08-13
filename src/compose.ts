@@ -6,7 +6,7 @@ export interface LensCompose {
 }
 
 /**
- *
+ * Compose two lenses (`Lens<A, B>, Lens<B, C>`) to produce a new lens `Lens<A, C>`.
  * @param lenses
  */
 const compose: LensCompose = (...lenses) => ({
