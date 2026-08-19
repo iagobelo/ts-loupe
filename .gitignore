@@ -7,14 +7,11 @@
 # Node.js modules.
 node_modules/
 
-# NPM's lockfile & shrinkwrap.
-# We're using Yarn and it provides it's own lockfile.
-package-lock.json
-npm-shrinkwrap.json
+# Build output. Anchored to the repository root so it cannot swallow a
+# directory such as `test/dist/`, which holds the artifact test suite.
+/dist/
+/coverage/
 
-# Log's files.
+# Logs.
 *.log
 *.log.*
-
-dist/
-types/

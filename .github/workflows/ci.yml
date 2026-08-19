@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: Lint, types and package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Type-level tests
+        run: npm run test:types
+      - name: Build
+        run: npm run build
+      - name: Validate published package
+        run: npm run check:package
+
+  test:
+    name: Test on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22 is LTS maintenance, 24 is active LTS, 26 is Current and becomes LTS
+        # in October 2026. Node 20 is past end-of-life but still runs the dev
+        # toolchain, whose own floor is 20.19.
+        node: [20, 22, 24, 26]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Unit tests
+        run: npm run test
+      - name: Build
+        run: npm run build
+      # Exercises the actual ESM, CJS and UMD artifacts, which are a different
+      # program from `src` and were where v0.1.2 silently regressed.
+      - name: Tests against the built artifacts
+        run: npm run test:dist
+
+  compat:
+    name: Installed package on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Below the dev toolchain's own floor, so these run the packed tarball
+        # with nothing but Node. This is what makes `engines.node: >=18` a
+        # tested claim rather than a guess.
+        node: [18, 20]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Pack
+        run: npm pack --pack-destination "$RUNNER_TEMP"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install the tarball and run it
+        working-directory: ${{ runner.temp }}
+        run: |
+          node --version
+          npm init -y >/dev/null
+          npm install ./ts-loupe-*.tgz
+          cp "$GITHUB_WORKSPACE/scripts/smoke.mjs" .
+          node smoke.mjs

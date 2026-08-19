@@ -1,7 +1,4 @@
-# Unlinted files and folders.
-# References at https://prettier.io/docs/en/ignore.html#ignoring-files.
-
-# Generated docs, bundles and type definitions.
-docs/
-dist/
-types/
+# Generated output. Anchored to the repository root so it does not also ignore
+# `test/dist/`, which is source, not build output.
+/dist/
+/coverage/

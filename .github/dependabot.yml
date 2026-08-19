@@ -1,0 +1,27 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for the whole toolchain instead of the eight stale single-package
+      # PRs that accumulated on v0.x.
+      dev-dependencies:
+        applies-to: version-updates
+        dependency-type: development
+        update-types: [minor, patch]
+      dev-dependencies-major:
+        applies-to: version-updates
+        dependency-type: development
+        update-types: [major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ['*']
