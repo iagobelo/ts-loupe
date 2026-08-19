@@ -1,8 +1,13 @@
-import lens from './lens';
-import set from './set';
-import over from './over';
-import view from './view';
-import compose from './compose';
-import prop from './prop';
+import lens from './lens.js';
+import set from './set.js';
+import over from './over.js';
+import view from './view.js';
+import compose from './compose.js';
+import prop from './prop.js';
 
 export { lens, set, over, view, compose, prop };
+
+export type { Getter, Setter, Lens, LensBuilder } from './lens.js';
+export type { Focus, HasKey, LensProp, PropLens } from './prop.js';
+export type { LensCompose } from './compose.js';
+export type { LensSet } from './set.js';
