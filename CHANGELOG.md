@@ -5,6 +5,24 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-08-19
+
+Documentation only. The published code is byte-for-byte identical to `2.0.0`; this release exists
+so that npmjs.com, which renders the README from the tarball rather than from the repository,
+stops showing broken badges.
+
+### Fixed
+
+- The two Bundlephobia badges rendered as `429`. Bundlephobia is the failing upstream rather than
+  the badge host, and the pair was redundant besides — `min` and `minzip` measured the same
+  bundle — so a single bundlejs badge replaces both.
+- The license badge read through badgen, which queries the GitHub API and is subject to its rate
+  limit. It now reads the license from npm metadata, removing the GitHub API from that path.
+
+### Added
+
+- A monthly downloads badge.
+
 ## [2.0.0] - 2026-08-19
 
 First release since 2021. It repairs a package that shipped without type declarations for five
@@ -102,6 +120,7 @@ years and fixes three ways the runtime could silently corrupt data.
 
 - Initial release: `lens`, `view`, `set`, `over`, `prop` and `compose`.
 
+[2.0.1]: https://github.com/iagobelo/ts-loupe/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/iagobelo/ts-loupe/compare/v0.1.2...v2.0.0
 [0.1.2]: https://github.com/iagobelo/ts-loupe/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/iagobelo/ts-loupe/compare/v0.1.0...v0.1.1
