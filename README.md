@@ -1,10 +1,10 @@
 # TS Loupe
 
 [![CI](https://github.com/iagobelo/ts-loupe/actions/workflows/ci.yml/badge.svg)](https://github.com/iagobelo/ts-loupe/actions/workflows/ci.yml)
-[![npm](https://badgen.net/npm/v/ts-loupe)](https://www.npmjs.com/package/ts-loupe)
-[![License](https://badgen.net/github/license/iagobelo/ts-loupe)](./LICENSE)
-[![Library minified size](https://badgen.net/bundlephobia/min/ts-loupe)](https://bundlephobia.com/result?p=ts-loupe)
-[![Library minified + gzipped size](https://badgen.net/bundlephobia/minzip/ts-loupe)](https://bundlephobia.com/result?p=ts-loupe)
+[![npm version](https://img.shields.io/npm/v/ts-loupe)](https://www.npmjs.com/package/ts-loupe)
+[![Bundle size](https://img.shields.io/bundlejs/size/ts-loupe)](https://bundlejs.com/?q=ts-loupe)
+[![Downloads](https://img.shields.io/npm/dm/ts-loupe)](https://www.npmjs.com/package/ts-loupe)
+[![License](https://img.shields.io/npm/l/ts-loupe)](./LICENSE)
 
 Strongly typed, dependency-free lenses for TypeScript.
 
