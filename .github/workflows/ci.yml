@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: Lint, types and package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Type-level tests
+        run: npm run test:types
+      - name: Build
+        run: npm run build
+      - name: Validate published package
+        run: npm run check:package
+
+  test:
+    name: Test on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Node 22 is in LTS maintenance, 24 is active LTS, 26 is Current and
+        # becomes LTS in October 2026. Node 20 reached end-of-life in April 2026.
+        node: [22, 24, 26]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Unit tests
+        run: npm run test
+      - name: Build
+        run: npm run build
+      # Exercises the actual ESM, CJS and UMD artifacts, which are a different
+      # program from `src` and were where v0.1.2 silently regressed.
+      - name: Tests against the built artifacts
+        run: npm run test:dist
