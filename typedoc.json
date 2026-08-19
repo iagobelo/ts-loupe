@@ -1,9 +1,0 @@
-{
-  "out": "./docs",
-  "mode": "file",
-  "name": "TS Loupe",
-  "theme": "markdown",
-  "readme": "none",
-  "module": "es2015",
-  "tsconfig": "./tsconfig.bundle.json"
-}

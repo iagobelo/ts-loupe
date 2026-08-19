@@ -4,8 +4,12 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "verbatimModuleSyntax": true,
-    "noEmit": true
+
+    "rootDir": "src",
+    "outDir": "dist/esm",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
   },
-  "include": ["src", "test", "vitest.config.ts"],
-  "exclude": ["test/dist"]
+  "include": ["src"]
 }

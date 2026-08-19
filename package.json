@@ -1,40 +1,67 @@
 {
   "name": "ts-loupe",
-  "version": "0.1.2",
-  "description": "Strongly typed and lightweight lens library.",
-  "cdn": "dist/index.umd.js",
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
-  "unpkg": "dist/index.umd.js",
-  "module": "dist/index.esm.js",
-  "jsdelivr": "dist/index.umd.js",
-  "umd:main": "dist/index.umd.js",
-  "dependencies": {},
-  "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "bili": "^4.8.1",
-    "jest": "^24.9.0",
-    "prettier": "^1.18.2",
-    "rollup-plugin-typescript2": "^0.24.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.6.2"
+  "version": "2.0.0",
+  "description": "Strongly typed, dependency-free lens library for TypeScript.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "unpkg": "./dist/index.umd.min.js",
+  "jsdelivr": "./dist/index.umd.min.js",
+  "cdn": "./dist/index.umd.min.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=22"
   },
   "scripts": {
-    "test": "yarn test:lint && yarn test:unit",
-    "test:lint": "prettier src/**/*.{ts,tsx,js,jsx,json} --check",
-    "test:unit": "jest",
-    "lint": "prettier src/**/*.{ts,tsx,js,jsx,json} --write",
-    "build": "bili",
-    "prepublishOnly": "yarn build && yarn test"
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build:esm": "tsc -p tsconfig.build.esm.json",
+    "build:cjs": "tsc -p tsconfig.build.cjs.json && node -e \"fs.writeFileSync('dist/cjs/package.json',JSON.stringify({type:'commonjs'},null,2)+'\\n')\"",
+    "build:umd": "rollup -c rollup.config.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test:types": "tsc -p tsconfig.types-test.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:dist": "vitest run --config vitest.dist.config.ts",
+    "lint": "oxlint src test && prettier --check .",
+    "format": "prettier --write .",
+    "check:package": "publint --strict && attw --pack .",
+    "verify": "npm run lint && npm run typecheck && npm run test:types && npm run test && npm run build && npm run test:dist && npm run check:package",
+    "prepublishOnly": "npm run verify"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iagobelo/ts-loupe.git"
   },
   "keywords": [
+    "lens",
+    "lenses",
+    "optics",
+    "functional",
+    "fp",
+    "immutable",
+    "immutability",
     "typescript",
-    "boilerplate",
-    "library"
+    "getter",
+    "setter"
   ],
   "author": {
     "name": "Iago Belo"
@@ -43,5 +70,16 @@
   "bugs": {
     "url": "https://github.com/iagobelo/ts-loupe/issues"
   },
-  "homepage": "https://github.com/iagobelo/ts-loupe#readme"
+  "homepage": "https://github.com/iagobelo/ts-loupe#readme",
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@rollup/plugin-terser": "1.0.0",
+    "@types/node": "26.2.0",
+    "oxlint": "1.79.0",
+    "prettier": "3.9.6",
+    "publint": "0.3.24",
+    "rollup": "4.62.4",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  }
 }
