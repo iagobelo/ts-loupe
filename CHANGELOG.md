@@ -52,8 +52,9 @@ years and fixes three ways the runtime could silently corrupt data.
   different program from what users install — the `__proto__` defect above existed only in the
   shipped bundle and was therefore invisible to it.
 - Type-level tests compiled by `tsc`, so type regressions fail CI.
-- GitHub Actions CI across Node 22, 24 and 26 with lint, typecheck, type tests, unit tests, build,
-  artifact tests and package validation.
+- GitHub Actions CI across Node 20, 22, 24 and 26 with lint, typecheck, type tests, unit tests,
+  build, artifact tests and package validation, plus a compatibility job that installs the packed
+  tarball on Node 18 and 20.
 - Dependabot, grouping devDependency updates into a single pull request.
 
 ### Changed
@@ -63,8 +64,9 @@ years and fixes three ways the runtime could silently corrupt data.
 - **Breaking:** the package is ESM-first (`"type": "module"`) and declares `"exports"`, so deep
   imports such as `ts-loupe/dist/index.js` are no longer reachable. CommonJS `require` is still
   supported through the `require` condition.
-- **Breaking:** `engines.node` is `>=22`, matching the Node versions CI tests. Node 20 reached
-  end-of-life in April 2026.
+- `engines.node` is declared for the first time, as `>=18`. The dev toolchain itself needs Node
+  20.19, but consumers only run the built output, so CI additionally installs the packed tarball
+  on Node 18 and 20 and exercises it with nothing but Node.
 - `unpkg` and `jsdelivr` now resolve to the minified UMD bundle. The bundle path
   (`dist/index.umd.js`) and the browser global name (`ts-loupe`) are unchanged, so existing
   `<script>` tags keep working.

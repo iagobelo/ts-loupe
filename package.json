@@ -28,7 +28,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=22"
+    "node": ">=18"
   },
   "scripts": {
     "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
@@ -41,7 +41,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:dist": "vitest run --config vitest.dist.config.ts",
-    "lint": "oxlint src test && prettier --check .",
+    "lint": "oxlint src test scripts && prettier --check .",
     "format": "prettier --write .",
     "check:package": "publint --strict && attw --pack .",
     "verify": "npm run lint && npm run typecheck && npm run test:types && npm run test && npm run build && npm run test:dist && npm run check:package",

@@ -18,7 +18,7 @@ npm install ts-loupe
 ```
 
 Ships ESM and CommonJS builds with type declarations for both, plus a UMD bundle for the browser.
-Requires Node.js 22 or newer.
+Requires Node.js 18 or newer.
 
 ### From a CDN
 
@@ -289,10 +289,11 @@ The UMD bundle stays at `dist/index.umd.js` and still attaches to the `ts-loupe`
 existing `<script>` tags keep working. `unpkg.com/ts-loupe` and `cdn.jsdelivr.net/npm/ts-loupe`
 now resolve to the minified bundle.
 
-### Node.js 22 or newer
+### Node.js 18 or newer
 
-`engines.node` is now `>=22`, matching the versions CI tests. Node 20 reached end-of-life in
-April 2026.
+`engines.node` is declared for the first time, as `>=18`. CI runs the full suite on Node 20, 22,
+24 and 26, and additionally installs the packed tarball on Node 18 and 20 and exercises it with
+nothing but Node, so the floor is tested rather than assumed.
 
 ## License
 

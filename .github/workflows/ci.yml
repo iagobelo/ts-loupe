@@ -40,9 +40,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Node 22 is in LTS maintenance, 24 is active LTS, 26 is Current and
-        # becomes LTS in October 2026. Node 20 reached end-of-life in April 2026.
-        node: [22, 24, 26]
+        # 22 is LTS maintenance, 24 is active LTS, 26 is Current and becomes LTS
+        # in October 2026. Node 20 is past end-of-life but still runs the dev
+        # toolchain, whose own floor is 20.19.
+        node: [20, 22, 24, 26]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -58,3 +59,35 @@ jobs:
       # program from `src` and were where v0.1.2 silently regressed.
       - name: Tests against the built artifacts
         run: npm run test:dist
+
+  compat:
+    name: Installed package on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Below the dev toolchain's own floor, so these run the packed tarball
+        # with nothing but Node. This is what makes `engines.node: >=18` a
+        # tested claim rather than a guess.
+        node: [18, 20]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Pack
+        run: npm pack --pack-destination "$RUNNER_TEMP"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install the tarball and run it
+        working-directory: ${{ runner.temp }}
+        run: |
+          node --version
+          npm init -y >/dev/null
+          npm install ./ts-loupe-*.tgz
+          cp "$GITHUB_WORKSPACE/scripts/smoke.mjs" .
+          node smoke.mjs
